@@ -50,18 +50,52 @@ const products = [
         imageLink: 'https://www.apple.com/v/iphone/home/af/images/overview/compare/compare_iphone_11_pro__fvqwhr4dkhiu_large.jpg'
     }
 ];
+
+function render(product) {
+    return `
+    
+    <div class="shop_img"><img src="${product.imageLink}"/></div>
+   <div class="shop_description">
+    <p> ${product.title} </p>
+    <p >${product.description}</p>
+   </div>
+   
+   <div class="button_price">
+    <p>${product.price.currency} ${product.price.value} </p>
+    
+    <a class="a"  > Add to Basket</a>
+     </div>`
+}
+
+let a = document.getElementsByClassName('a');
+let SumBasket = document.getElementById('basket_sum');
+
 const shop = document.getElementById('shop');
 
 products.forEach(function (product) {
     let newDiv = document.createElement('div');
-
-    newDiv.innerHTML = `<p> ${product.title} </p>
-    <img src="${product.imageLink}" style="height:145px; width: 215px; " />
-    <p >${product.description}</p>
-    <p>${product.price.currency} ${product.price.value} </p>
-    `
+    newDiv.classList.add('item');
+    if (product.price.currency = "USD") {
+        product.price.currency = "$"
+    }
+    newDiv.innerHTML = render(product);
+    if (product.price.currency = "USD") {
+        product.price.currency = "$"
+    }
     shop.appendChild(newDiv);
 
 });
+for (let i = 0; i <= a.length; i++) {
+
+    a[i].addEventListener("click", function (event) {
+        let changeA = event.target;
+        changeA.innerText = "Remove from Basket";
+        changeA.setAttribute("style", "background-color:grey; border: 1px solid grey;");
+        SumBasket.textContent++;
+    });
+
+}
+
+
 
 
