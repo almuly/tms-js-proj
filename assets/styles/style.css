@@ -42,6 +42,18 @@ header {
     width: 900px;
     margin: 0 auto 0;
 }
+.container{
+    width: 900px;
+    margin: 0 auto 0;
+}
+#sort_bar{ display: flex;
+    justify-content: space-between;
+    height: 19px;
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+}
 
 .basket {
     margin-top: 15px;

@@ -51,6 +51,7 @@ const products = [
     }
 ];
 
+
 function render(product) {
     return `
     
@@ -63,39 +64,92 @@ function render(product) {
    <div class="button_price">
     <p>${product.price.currency} ${product.price.value} </p>
     
-    <a class="a"  > Add to Basket</a>
+    <a class="a" data-price ='${product.price.value}' > Add to Basket</a>
      </div>`
 }
 
-let a = document.getElementsByClassName('a');
-let SumBasket = document.getElementById('basket_sum');
+
+let numBasket = document.getElementById('basket_sum');
+let sumBasket = document.getElementById('basket_price');
+sumBasket.innerText = '0';
+
 
 const shop = document.getElementById('shop');
 
-products.forEach(function (product) {
-    let newDiv = document.createElement('div');
-    newDiv.classList.add('item');
-    if (product.price.currency = "USD") {
-        product.price.currency = "$"
-    }
-    newDiv.innerHTML = render(product);
-    if (product.price.currency = "USD") {
-        product.price.currency = "$"
-    }
-    shop.appendChild(newDiv);
+function inputItem(products) {
+    products.forEach(function (product) {
+        let newDiv = document.createElement('div');
+        newDiv.classList.add('item');
 
-});
-for (let i = 0; i <= a.length; i++) {
+        if (product.price.currency = "USD") {
+            product.price.currency = "$"
+        }
 
-    a[i].addEventListener("click", function (event) {
-        let changeA = event.target;
-        changeA.innerText = "Remove from Basket";
-        changeA.setAttribute("style", "background-color:grey; border: 1px solid grey;");
-        SumBasket.textContent++;
+        newDiv.innerHTML = render(product);
+        if (product.price.currency = "USD") {
+            product.price.currency = "$"
+        }
+
+        shop.appendChild(newDiv);
+
     });
 
+    // buyProduct();
 }
 
+// function buyProduct(){
+//     let addBasket = document.getElementsByClassName('a');
+//     for (let i = 0; i <= addBasket.length; i++) {
+//         addBasket[i].addEventListener("click", function (event) {
+//             let changeA = event.target;
+//             if (addBasket.textContent == 'Remove from Basket') {
+//                 changeA.innerText = "Add to Basket";
+//                 changeA.setAttribute("style", "background-color:#ff8b3; border: 1px solid #ff8b3;");
+//                 numBasket.textContent--;
+//                 sumBasket.textContent = parseInt(sumBasket.textContent) - parseInt(addBasket[i].dataset.price);
+//             } else {
+//                 changeA.innerText = "Remove from Basket";
+//                 changeA.setAttribute("style", "background-color:grey; border: 1px solid grey;");
+//                 numBasket.textContent++;
+//                 sumBasket.textContent = parseInt(sumBasket.textContent) + parseInt(addBasket[i].dataset.price);
+//             }
+//
+//         });
+//     }
+// }
+
+
+function sortProductDesc(products) {
+    let sortedProducts = products.sort(function (a, b) {
+        return a.price.value - b.price.value;
+    });
+
+    inputItem(sortedProducts);
+}
+
+function sortProductAsc(products) {
+    let sortedProducts = products.sort(function (a, b) {
+        return b.price.value - a.price.value;
+    });
+
+    inputItem(sortedProducts);
+}
+
+inputItem(products);
+
+document.getElementById('sort').addEventListener("click", function (event) {
+    let sortItem = event.target;
+
+    shop.innerHTML = '';
+
+    if (sortItem.textContent == 'Desc') {
+        sortItem.innerText = 'Asc';
+        sortProductDesc(products);
+    } else if (sortItem.textContent == 'Asc') {
+        sortItem.innerText = 'Desc';
+        sortProductAsc(products);
+    }
+});
 
 
 
