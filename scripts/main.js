@@ -64,19 +64,19 @@ function render(product) {
    <div class="button_price">
     <p>${product.price.currency} ${product.price.value} </p>
     
-    <a class="a" data-price ='${product.price.value}' > Add to Basket</a>
+    <a id =${product.id} class="a" > Add to Basket</a>
      </div>`
 }
 
-
-let numBasket = document.getElementById('basket_sum');
-let sumBasket = document.getElementById('basket_price');
-sumBasket.innerText = '0';
-
-
+let currentBasket = JSON.parse(localStorage.getItem('basket') ? localStorage.getItem('basket') : "[]");
+let result = [];
 const shop = document.getElementById('shop');
 
+
+
+
 function inputItem(products) {
+
     products.forEach(function (product) {
         let newDiv = document.createElement('div');
         newDiv.classList.add('item');
@@ -86,70 +86,84 @@ function inputItem(products) {
         }
 
         newDiv.innerHTML = render(product);
-        if (product.price.currency = "USD") {
-            product.price.currency = "$"
-        }
 
         shop.appendChild(newDiv);
 
-    });
+        let addButton = document.getElementById(product.id);
 
-    // buyProduct();
+        if (currentBasket.find((item) => product.id === item.id)) {
+            addButton.classList.add('grey_a');
+            addButton.textContent = 'Remove from Basket';
+        }
+
+        document.getElementById('basket_sum').innerText = currentBasket.length;
+        document.getElementById('basket_price').innerText = currentBasket.reduce((a, b) => a + b.price.value, 0);
+
+        addButton.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            event.target.classList.toggle('grey_a');
+
+            if (currentBasket.find((item) => product.id === item.id)) {
+                event.target.textContent = 'Add to Basket';
+                currentBasket = currentBasket.filter((item) => product.id !== item.id);
+            } else {
+                event.target.textContent = 'Remove from Basket';
+                currentBasket.push(product);
+            }
+
+            localStorage.setItem("basket", JSON.stringify(currentBasket));
+
+            document.getElementById('basket_sum').innerText = currentBasket.length;
+            document.getElementById('basket_price').innerText = currentBasket.reduce((a, b) => a + b.price.value, 0);
+        });
+    });
 }
 
-// function buyProduct(){
-//     let addBasket = document.getElementsByClassName('a');
-//     for (let i = 0; i <= addBasket.length; i++) {
-//         addBasket[i].addEventListener("click", function (event) {
-//             let changeA = event.target;
-//             if (addBasket.textContent == 'Remove from Basket') {
-//                 changeA.innerText = "Add to Basket";
-//                 changeA.setAttribute("style", "background-color:#ff8b3; border: 1px solid #ff8b3;");
-//                 numBasket.textContent--;
-//                 sumBasket.textContent = parseInt(sumBasket.textContent) - parseInt(addBasket[i].dataset.price);
-//             } else {
-//                 changeA.innerText = "Remove from Basket";
-//                 changeA.setAttribute("style", "background-color:grey; border: 1px solid grey;");
-//                 numBasket.textContent++;
-//                 sumBasket.textContent = parseInt(sumBasket.textContent) + parseInt(addBasket[i].dataset.price);
-//             }
-//
-//         });
-//     }
-// }
 
+inputItem(products);
 
-function sortProductDesc(products) {
-    let sortedProducts = products.sort(function (a, b) {
+function sortProductDesc(product) {
+    let sortedProducts = product.sort(function (a, b) {
         return a.price.value - b.price.value;
     });
 
     inputItem(sortedProducts);
 }
 
-function sortProductAsc(products) {
-    let sortedProducts = products.sort(function (a, b) {
+function sortProductAsc(product) {
+    let sortedProducts = product.sort(function (a, b) {
         return b.price.value - a.price.value;
     });
 
     inputItem(sortedProducts);
 }
 
-inputItem(products);
 
-document.getElementById('sort').addEventListener("click", function (event) {
+document.getElementById('sort').addEventListener("click", (event) => {
     let sortItem = event.target;
 
     shop.innerHTML = '';
 
     if (sortItem.textContent == 'Desc') {
         sortItem.innerText = 'Asc';
-        sortProductDesc(products);
+        sortProductDesc(result ? result :products);
     } else if (sortItem.textContent == 'Asc') {
         sortItem.innerText = 'Desc';
-        sortProductAsc(products);
+        sortProductAsc(result ? result :products);
     }
 });
 
-
+document.getElementById('search').addEventListener("keyup", (event) => {
+    let request = event.target.value;
+    if (request.length > 1) {
+        let reg = new RegExp(request, 'gi');
+         result = products.filter((product) => product.title.search(reg) !== -1 || product.description.search(reg) !== -1);
+        shop.innerHTML = '';
+        inputItem(result);
+    } else {
+        shop.innerHTML = '';
+        inputItem(products);
+    }
+});
 
