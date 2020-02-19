@@ -13,6 +13,9 @@
 body {
     margin: 0px;
     background-color: var(--primary-color);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
 }
 
 img {
@@ -35,9 +38,13 @@ header {
     height: 55px;
 
 }
+.logo {
+    font-weight: bold;
+}
 
 .container_header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     width: 900px;
     margin: 0 auto 0;
@@ -67,20 +74,21 @@ header {
     border-radius: 5px;
 }
 
-.basket {
-    margin-top: 15px;
-
-}
 
 #basket_sum {
-    display: flex;
+    display:inline-flex;
     align-items: center;
     justify-content: center;
-    height: 15px;
-    width: 15px;
-    border: 2px solid #ff8b38;
+    font-size: 9px;
+    min-width: 14px;
+    height: 14px;
     background-color: #ff8b38;
     border-radius: 50%;
+    transform: translateY(-8px);
+}
+
+.basket_price {
+    font-size: 9px;
 }
 
 .a {
@@ -134,4 +142,21 @@ header {
 .shop_description {
     width: 200px;
 
+}
+.button_price-block {
+    align-self: end;
+    justify-self: end;
+    text-align: right;
+}
+
+.button_price {
+    padding-bottom: 8px;
+}
+.shop_title {
+    padding-bottom: 20px;
+    font-weight: 600;
+}
+
+.shop_text {
+    font-size: 12px;
 }

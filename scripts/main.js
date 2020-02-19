@@ -58,13 +58,12 @@
     
     <div class="shop_img"><img src="${product.imageLink}"/></div>
    <div class="shop_description">
-    <p> ${product.title} </p>
+    <p class="shop_title"> ${product.title} </p>
     <p >${product.description}</p>
    </div>
    
-   <div class="button_price">
-     <p>BYN  ${Math.ceil(product.price.value*currencyUSD.Cur_OfficialRate)} </p>
-    
+   <div class="button_price-block">
+     <p class="button_price">BYN  ${Math.ceil(product.price.value*currencyUSD.Cur_OfficialRate)} </p>    
     <a id =${product.id} class="a" > Add to Basket</a>
      </div>`
     }
